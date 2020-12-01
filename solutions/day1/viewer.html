@@ -5,6 +5,11 @@
     <style>
       html, body { font-family: sans-serif; }
       pre { border-radius: 0.5em; padding: 0.5em; background: #eee; }
+      pre.collapse { height: 100px; overflow-y: scroll; }
+      div.graph { display: flex; align-items: flex-end; }
+      div.graph > div.bar { flex: auto; background: black; color: white; height: 20px; margin: 1px; padding: 1px; font-size: 10px;}
+      div.graph > div.bar > label { writing-mode: vertical-lr; }
+      tag { padding: 4px; border-radius: 4px; color: white; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -12,9 +17,16 @@
   <body>
     <div id="viewer">
       <h1>Solution Viewer ({{ solutionTitle }})</h1>
-      <p>For interesting problems; this page can be used as a dynamic viewer.</p>
+      <p>Graph of the input values, parsed as integers, and sorted lowest to highest:</p>
+      <div class="graph">
+      <div v-for="input in inputs" class="bar" v-bind:style="styleInput(input)"><label>{{ input }}</label></div>
+      </div>
+      <p>Solution 1, highlighted on the chart in <tag style="background: blue;">blue</tag>:</p>
+      <pre>{{ solution1 }}</pre>
+      <p>Solution 2, highligted on the chart in <tag style="background: green;">green</tag>:</p></o>
+      <pre>{{ solution2 }}</pre>
       <h3><a href="./input.txt">input.txt</a></h3>
-      <pre><code>{{ inputText }}</code></pre>
+      <pre class="collapse"><code>{{ inputText }}</code></pre>
       <h3><a href="./solution.js">solution.js</a></h3>
       <pre><code>{{ solutionText }}</code></pre>
     </div>
@@ -24,20 +36,61 @@ const app = new Vue({
   data: () => {
     return {
       solutionText: '[Loading]',
-      inputText: '[Loading]'
+      inputText: '[Loading]',
+      solution1: '[Calculating]',
+      solution2: '[Calculating]'
     }
   },
   computed: {
     solutionTitle() {
       const parts = (document.location + '').split('/')
       return parts.reverse()[1]
+    },
+    inputs() {
+      return this.inputText.split('\n').map(n => Number.parseInt(n)).sort((a, b) => a - b)
+    }
+  },
+  methods: {
+    styleInput(value) {
+      let color = 'black';
+      color = (value === this.solution1.a || value === this.solution1.b) ? 'blue' : color
+      color = (value === this.solution2.a || value === this.solution2.b || value === this.solution2.c) ? 'green' : color
+      return `height: ${value/10}px; background: ${color};`
     }
   },
   async mounted () {
     this.solutionText = (await axios.get('./solution.js')).data
     this.inputText = (await axios.get('./input.txt')).data
+    this.solution1 = solveForFirstStar(this.inputText)
+    this.solution2 = solveForSecondStar(this.inputText)
   }
 })
+
+function solveForFirstStar (input) {
+  const numbers = input.split('\n').map(n => Number.parseInt(n))
+  const sums = []
+  numbers.forEach(a => {
+    numbers.forEach(b => {
+      sums.push({ a, b, sum: a + b, product: a * b })
+    })
+  })
+
+  return sums.filter(n => n.sum === 2020)[0]
+}
+
+function solveForSecondStar (input) {
+  const numbers = input.split('\n').map(n => Number.parseInt(n))
+  const sums = []
+  numbers.forEach(a => {
+    numbers.forEach(b => {
+      numbers.forEach(c => {
+        sums.push({ a, b, c, sum: a + b + c, product: a * b * c })
+      })
+    })
+  })
+
+  return sums.filter(n => n.sum === 2020)[0]
+}
     </script>
   </body>
 </html>
