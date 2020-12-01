@@ -30,8 +30,18 @@ async function solveForFirstStar (input) {
 }
 
 async function solveForSecondStar (input) {
-  const solution = 'UNSOLVED'
-  report('Solution 2:', solution)
+  const numbers = input.split('\n').map(n => Number.parseInt(n))
+  const sums = []
+  numbers.forEach(a => {
+    numbers.forEach(b => {
+      numbers.forEach(c => {
+        sums.push({ a, b, c, sum: a + b + c, product: a * b * c })
+      })
+    })
+  })
+
+  const solution = sums.filter(n => n.sum === 2020)[0]
+  report('Solution 2:', solution.product, solution)
 }
 
 run()
