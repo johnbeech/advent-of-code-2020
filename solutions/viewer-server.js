@@ -13,7 +13,7 @@ async function generateIndexHTML () {
   const links = solutions
     .filter(n => n.indexOf('.js') === -1 && n.indexOf('.html') === -1)
     .map(solution => {
-      const folder = solution.substr(fromHere('../').length)
+      const folder = solution.substr(fromHere('./').length)
       return `      <li><a href="./${folder}/viewer.html">${folder}</a></li>`
     })
 
@@ -41,7 +41,23 @@ ${links.join('\n')}
 app.use('/solutions', express.static(fromHere('')))
 
 app.get('/', async (req, res) => {
-  const html = await generateIndexHTML()
+  await generateIndexHTML()
+  const title = packageData.logName
+  const html = `<!DOCTYPE html>
+  <html>
+    <head>
+      <title>${title}</title>
+      <style> html, body { font-family: sans-serif; }</style>
+    </head>
+    <body>
+      <h1>${title}</h1>
+      <ul>
+        <li><a href="./solutions/">Solution Explorer</a></li>
+      </ul>
+      <p>This page will be replaced with a rendered README.md when hosted by Github Pages.</p>
+    </body>
+  </html>
+    `
   res.send(html)
 })
 
