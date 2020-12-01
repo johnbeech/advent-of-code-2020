@@ -11,22 +11,19 @@ async function run () {
 }
 
 async function solveForFirstStar (input) {
-  let solution = 'UNSOLVED'
-
   const numbers = input.split('\n').map(n => Number.parseInt(n))
 
-  report(numbers)
+  report('Input:', numbers.length, 'numbers in a list')
 
-  numbers.forEach(n => {
-    const sums = numbers.filter(y => y + n === 2020)
-    if (sums.length > 0) {
-      console.log('Found a match')
-      solution = sums[0] * n
-    }
+  const sums = []
+  numbers.forEach(a => {
+    numbers.forEach(b => {
+      sums.push({ a, b, sum: a + b, product: a * b })
+    })
   })
 
-  report('Input:', input)
-  report('Solution 1:', solution)
+  const solution = sums.filter(n => n.sum === 2020)[0]
+  report('Solution 1:', solution.product, solution)
 }
 
 async function solveForSecondStar (input) {
