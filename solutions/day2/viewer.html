@@ -6,6 +6,16 @@
       html, body { font-family: sans-serif; }
       pre { border-radius: 0.5em; padding: 0.5em; background: #eee; }
       pre.collapse { height: 100px; overflow-y: scroll; }
+      div.password.row { display: flex; }
+      div.password.row > p { margin: 4px; flex: 1 1; }
+      p > span { font-family: 'Lucida Console', monospace; font-weight: bold; }
+      p.min { max-width: 100px; }
+      p.max { max-width: 100px; }
+      p.position1 { max-width: 150px; }
+      p.position2 { max-width: 150px; }
+      p.policy { max-width: 100px; }
+      p.password { flex: 5 5 }
+      p.password > span { margin: 5px; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -13,6 +23,26 @@
   <body>
     <div id="viewer">
       <h1>Solution Viewer ({{ solutionTitle }})</h1>
+      <h2>Part 1 - Min Max Policy</h2>
+      <p>Valid passwords ({{ part1.solution }})</p>
+      <div v-for="password in part1.validPasswords" class="password row">
+        <p class="min"><b>Min: </b><span>{{ password.min }}</span></p>
+        <p class="max"><b>Max: </b><span>{{ password.max }}</span></p>
+        <p class="policy"><b>Policy: </b><span :style="highlightPolicyChar(password.policy, password.policy)">{{ password.policy }}</span></p>
+        <p class="password"><b >Password: </b>
+          <span v-for="char in password.password.split('')" :style="highlightPolicyChar(char, password.policy)">{{ char }}</span>
+        </p>
+      </div>
+      <h2>Part 2 - Position Policy</h2>
+      <p>Valid passwords ({{ part2.solution }})</p>
+      <div v-for="password in part2.validPasswords" class="password row">
+        <p class="position1"><b>Position 1: </b><span>{{ password.position1 }}</span></p>
+        <p class="position2"><b>Position 2: </b><span>{{ password.position2 }}</span></p>
+        <p class="policy"><b>Policy: </b><span :style="highlightPosition(0, 1, 1)">{{ password.policy }}</span></p>
+        <p class="password"><b >Password: </b>
+          <span v-for="(char, index) in password.password.split('')" :style="highlightPosition(index, password.position1, password.position2)">{{ char }}</span>
+        </p>
+      </div>
       <p>For interesting problems; this page can be used as a dynamic viewer.</p>
       <h3><a href="./input.txt">input.txt</a></h3>
       <pre class="collapse"><code>{{ inputText }}</code></pre>
@@ -25,7 +55,9 @@ const app = new Vue({
   data: () => {
     return {
       solutionText: '[Loading]',
-      inputText: '[Loading]'
+      inputText: '[Loading]',
+      part1: { solution: '[Calculating]', validPasswords: [] },
+      part2: { solution: '[Calculating]', validPasswords: [] }
     }
   },
   computed: {
@@ -34,11 +66,67 @@ const app = new Vue({
       return parts.reverse()[1]
     }
   },
+  methods: {
+    highlightPolicyChar(char, policy) {
+      return (char === policy) ? 'color: blue;' : 'color: #777;'
+    },
+    highlightPosition(index, position1, position2) {
+      return (index === position1 - 1 || index === position2 - 1) ? 'color: green;' : 'color: #aaa;'
+    }
+  },
   async mounted () {
     this.solutionText = (await axios.get('./solution.js')).data
     this.inputText = (await axios.get('./input.txt')).data
+
+    this.part1 = await solveForFirstStar(this.inputText)
+    this.part2 = await solveForSecondStar(this.inputText)
   }
 })
+
+// Solution 1 functions
+
+function passwordParserByMinMax (line) {
+  const [, min, max, policy, password] = line.match(/(\d+)-(\d+)\s([a-z]):\s([a-z]+)/)
+  return { min, max, policy, password }
+}
+
+function validatePasswordByMinMax ({ min, max, policy, password }) {
+  const policyCount = password.split('').filter(c => c === policy).length
+  return (policyCount >= min) && (policyCount <= max)
+}
+
+async function solveForFirstStar (input) {
+  const passwords = input.split('\n').filter(n => n).map(passwordParserByMinMax)
+  const validPasswords = passwords.filter(validatePasswordByMinMax)
+
+  const solution = validPasswords.length
+
+  return { solution, validPasswords }
+}
+
+// Solution 2 functions
+
+function passwordParserByPosition (line) {
+  const [, position1, position2, policy, password] = line.match(/(\d+)-(\d+)\s([a-z]):\s([a-z]+)/)
+  return { position1: Number(position1), position2: Number(position2), policy, password }
+}
+
+function XOR (a, b) {
+  return (a || b) && !(a && b)
+}
+
+function validatePasswordByPosition ({ position1, position2, policy, password }) {
+  return XOR(password.charAt(position1 - 1) === policy, password.charAt(position2 - 1) === policy)
+}
+
+async function solveForSecondStar (input) {
+  const passwords = input.split('\n').filter(n => n).map(passwordParserByPosition)
+  const validPasswords = passwords.filter(validatePasswordByPosition)
+
+  const solution = validPasswords.length
+
+  return { solution, validPasswords }
+}
     </script>
   </body>
 </html>
