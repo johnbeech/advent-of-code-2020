@@ -32,11 +32,15 @@ async function solveForFirstStar (input) {
 
 function newPasswordParser (line) {
   const [, position1, position2, policy, password] = line.match(/(\d+)-(\d+)\s([a-z]):\s([a-z]+)/)
-  return { position1, position2, policy, password }
+  return { position1: Number(position1), position2: Number(position2), policy, password }
+}
+
+function XOR (a, b) {
+  return (a || b) && !(a && b)
 }
 
 function validatePasswordByPosition ({ position1, position2, policy, password }) {
-  return password.charAt(position1 + 1) === policy || password.charAt(position2 + 1) === policy
+  return XOR(password.charAt(position1 - 1) === policy, password.charAt(position2 - 1) === policy)
 }
 
 async function solveForSecondStar (input) {
