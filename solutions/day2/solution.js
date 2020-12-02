@@ -10,19 +10,21 @@ async function run () {
   await solveForSecondStar(input)
 }
 
-function passwordParser (line) {
+// Solution 1 functions
+
+function passwordParserByMinMax (line) {
   const [, min, max, policy, password] = line.match(/(\d+)-(\d+)\s([a-z]):\s([a-z]+)/)
   return { min, max, policy, password }
 }
 
-function validatePassword ({ min, max, policy, password }) {
+function validatePasswordByMinMax ({ min, max, policy, password }) {
   const policyCount = password.split('').filter(c => c === policy).length
   return (policyCount >= min) && (policyCount <= max)
 }
 
 async function solveForFirstStar (input) {
-  const passwords = input.split('\n').filter(n => n).map(passwordParser)
-  const validPasswords = passwords.filter(validatePassword)
+  const passwords = input.split('\n').filter(n => n).map(passwordParserByMinMax)
+  const validPasswords = passwords.filter(validatePasswordByMinMax)
 
   report('Valid passwords', validPasswords)
 
@@ -30,7 +32,9 @@ async function solveForFirstStar (input) {
   report('Solution 1:', solution)
 }
 
-function newPasswordParser (line) {
+// Solution 2 functions
+
+function passwordParserByPosition (line) {
   const [, position1, position2, policy, password] = line.match(/(\d+)-(\d+)\s([a-z]):\s([a-z]+)/)
   return { position1: Number(position1), position2: Number(position2), policy, password }
 }
@@ -44,7 +48,7 @@ function validatePasswordByPosition ({ position1, position2, policy, password })
 }
 
 async function solveForSecondStar (input) {
-  const passwords = input.split('\n').filter(n => n).map(newPasswordParser)
+  const passwords = input.split('\n').filter(n => n).map(passwordParserByPosition)
   const validPasswords = passwords.filter(validatePasswordByPosition)
 
   const solution = validPasswords.length
