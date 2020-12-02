@@ -30,8 +30,20 @@ async function solveForFirstStar (input) {
   report('Solution 1:', solution)
 }
 
+function newPasswordParser (line) {
+  const [, position1, position2, policy, password] = line.match(/(\d+)-(\d+)\s([a-z]):\s([a-z]+)/)
+  return { position1, position2, policy, password }
+}
+
+function validatePasswordByPosition ({ position1, position2, policy, password }) {
+  return password.charAt(position1 + 1) === policy || password.charAt(position2 + 1) === policy
+}
+
 async function solveForSecondStar (input) {
-  const solution = 'UNSOLVED'
+  const passwords = input.split('\n').filter(n => n).map(newPasswordParser)
+  const validPasswords = passwords.filter(validatePasswordByPosition)
+
+  const solution = validPasswords.length
   report('Solution 2:', solution)
 }
 
