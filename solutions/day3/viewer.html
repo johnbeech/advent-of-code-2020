@@ -6,6 +6,9 @@
       html, body { font-family: sans-serif; }
       pre { border-radius: 0.5em; padding: 0.5em; background: #eee; }
       pre.collapse { height: 100px; overflow-y: scroll; }
+      div.slope { display: inline-block; border: 2px solid black; }
+      div.row { display: block; }
+      div.tile { display: inline-block; width: 1em; height: 1em; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -13,7 +16,11 @@
   <body>
     <div id="viewer">
       <h1>Solution Viewer ({{ solutionTitle }})</h1>
-      <p>For interesting problems; this page can be used as a dynamic viewer.</p>
+      <div class="slope" v-if="slopeMap.slice">
+        <div class="row" v-for="(row, y) in slopeMap.slice">
+          <div class="tile" v-for="(tile, x) in row">{{ render(tile, x, y) }}</div>
+        </div>
+      </div>
       <h3><a href="./input.txt">input.txt</a></h3>
       <pre class="collapse"><code>{{ inputText }}</code></pre>
       <h3><a href="./solution.js">solution.js</a></h3>
@@ -25,7 +32,17 @@ const app = new Vue({
   data: () => {
     return {
       solutionText: '[Loading]',
-      inputText: '[Loading]'
+      inputText: '[Loading]',
+      slopeMap: {},
+      position: { x: 0, y: 0 }
+    }
+  },
+  methods: {
+    render(tile, x, y) {
+      if (this.position.x === x && this.position.y === y) {
+        return ICONS[TILES.BOAT]
+      }
+      return ICONS[tile]
     }
   },
   computed: {
@@ -37,8 +54,58 @@ const app = new Vue({
   async mounted () {
     this.solutionText = (await axios.get('./solution.js')).data
     this.inputText = (await axios.get('./input.txt')).data
+    this.slopeMap = createSlopeMap(this.inputText)
   }
 })
+
+const TILES = {
+  TREE: '#',
+  SNOW: '.',
+  BOAT: '?'
+}
+
+const ICONS = {
+  '#': '🎄',
+  '.': '❄',
+  '?': '⛵'
+}
+
+const routes = [
+  { dx: 1, dy: 1 },
+  { dx: 3, dy: 1 },
+  { dx: 5, dy: 1 },
+  { dx: 7, dy: 1 },
+  { dx: 1, dy: 2 }
+]
+
+function createSlopeMap (input) {
+  const slopeMap = {}
+  slopeMap.slice = input.split('\n').map(line => line.split(''))
+  slopeMap.width = slopeMap.slice[0].length
+  slopeMap.height = slopeMap.slice.length
+  slopeMap.getPosition = (x, y) => {
+    return slopeMap.slice[y][x % slopeMap.width]
+  }
+  return slopeMap
+}
+
+function traverse (slopeMap, { dx, dy }) {
+  const position = { x: 0, y: 0 }
+  const route = []
+
+  do {
+    const location = slopeMap.getPosition(position.x, position.y)
+    route.push({ x: position.x, y: position.y, tile: location })
+    position.x = position.x + dx
+    position.y = position.y + dy
+  } while (position.y < slopeMap.height)
+
+  return route
+}
+
+function countEncounters (route) {
+  return route.filter(n => n.tile === TILES.TREE).length
+}
     </script>
   </body>
 </html>
