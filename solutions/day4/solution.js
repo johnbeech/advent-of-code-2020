@@ -100,7 +100,7 @@ async function solveForSecondStar (input) {
     }
   })
 
-  await write(fromHere('part2-valid-passports.json'), JSON.stringify(validPassports), null, 2), 'utf8')
+  await write(fromHere('part2-valid-passports.json'), JSON.stringify(validPassports, null, 2), 'utf8')
 
   const solution = validPassports.length
   report('Solution 2:', solution)
