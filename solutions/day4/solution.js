@@ -1,5 +1,5 @@
 const path = require('path')
-const { read, position } = require('promise-path')
+const { read, write, position } = require('promise-path')
 const fromHere = position(__dirname)
 const report = (...messages) => console.log(`[${require(fromHere('../../package.json')).logName} / ${__dirname.split(path.sep).pop()}]`, ...messages)
 
@@ -78,7 +78,7 @@ async function solveForSecondStar (input) {
       return false
     }
 
-    const validBirthYear = Number.parseInt(p.byr) >= 1920 && Number.parseInt(p.byr) <= 2020
+    const validBirthYear = Number.parseInt(p.byr) >= 1920 && Number.parseInt(p.byr) <= 2002
     const validIssueYear = Number.parseInt(p.iyr) >= 2010 && Number.parseInt(p.iyr) <= 2020
     const validExpirationYear = Number.parseInt(p.eyr) >= 2020 && Number.parseInt(p.eyr) <= 2030
     const validHeight = validateHeight(p.hgt)
@@ -87,9 +87,22 @@ async function solveForSecondStar (input) {
     const validPassportId = validatePassportId(p.pid)
 
     return validBirthYear && validIssueYear && validExpirationYear && validHeight && validHairColor && validEyeColor && validPassportId
+  }).map(p => {
+    return {
+      birthYear: p.byr,
+      issueYear: p.iyr,
+      expirationYear: p.eyr,
+      height: p.hgt,
+      hairColor: p.hcl,
+      eyeColor: p.ecl,
+      passportId: p.pid
+    }
   })
+
+  await write(fromHere('part2-valid-passports.json'), JSON.stringify(validPassports, null, 2), 'utf8')
+
   const solution = validPassports.length
-  report('Solution 1:', solution)
+  report('Solution 2:', solution)
 }
 
 run()
