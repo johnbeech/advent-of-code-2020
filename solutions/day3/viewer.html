@@ -6,9 +6,9 @@
       html, body { font-family: sans-serif; }
       pre { border-radius: 0.5em; padding: 0.5em; background: #eee; }
       pre.collapse { height: 100px; overflow-y: scroll; }
-      div.slope { display: inline-block; border: 2px solid black; }
-      div.row { display: block; }
-      div.tile { display: inline-block; width: 1em; height: 1em; }
+      div.slope { display: inline-block; overflow: hidden; font-size: 24px; }
+      div.row { display: block; height: 1em; overflow: hidden; margin: 4px 0; }
+      div.tile { display: inline-block; width: 1em; height: 1em; overflow: hidden; margin: 0; text-align: center; margin: 0 4px; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -18,7 +18,7 @@
       <h1>Solution Viewer ({{ solutionTitle }})</h1>
       <div class="slope" v-if="slopeMap.slice">
         <div class="row" v-for="(row, y) in slopeMap.slice">
-          <div class="tile" v-for="(tile, x) in row">{{ render(tile, x, y) }}</div>
+          <div class="tile" v-for="(tile, x) in row" :style="cellStyle(tile, x, y)">{{ render(tile, x, y) }}</div>
         </div>
       </div>
       <h3><a href="./input.txt">input.txt</a></h3>
@@ -34,7 +34,8 @@ const app = new Vue({
       solutionText: '[Loading]',
       inputText: '[Loading]',
       slopeMap: {},
-      position: { x: 0, y: 0 }
+      position: { x: 0, y: 0 },
+      points: {}
     }
   },
   methods: {
@@ -43,6 +44,11 @@ const app = new Vue({
         return ICONS[TILES.BOAT]
       }
       return ICONS[tile]
+    },
+    cellStyle(tile, x, y) {
+      const points = this.points
+      const color = points[`${x},${y}`] || 'white';
+      return `outline: 2px solid ${color}; outline-offset: -2px;`
     }
   },
   computed: {
@@ -55,6 +61,16 @@ const app = new Vue({
     this.solutionText = (await axios.get('./solution.js')).data
     this.inputText = (await axios.get('./input.txt')).data
     this.slopeMap = createSlopeMap(this.inputText)
+    
+    const points = {}
+    routes.forEach(route => {
+      const path = traverse(this.slopeMap, route)
+      path.forEach(position => {
+        points[`${position.x % this.slopeMap.width},${position.y}`] = route.color
+      })
+    })
+    console.log('Points', points)
+    this.points = points
   }
 })
 
