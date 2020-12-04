@@ -64,7 +64,7 @@ function validateEyeColor (hairColor) {
 }
 
 function validatePassportId (id) {
-  return /[0-9]{9}/.test(id)
+  return /^[0-9]{9}$/.test(id)
 }
 
 async function solveForSecondStar (input) {
@@ -100,7 +100,7 @@ async function solveForSecondStar (input) {
     }
   })
 
-  await write(fromHere('part2-valid-passports.json'), JSON.stringify(validPassports, null, 2), 'utf8')
+  await write(fromHere('part2-valid-passports.json'), JSON.stringify(validPassports), null, 2), 'utf8')
 
   const solution = validPassports.length
   report('Solution 2:', solution)
