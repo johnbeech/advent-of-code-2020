@@ -9,6 +9,7 @@
       div.slope { display: inline-block; overflow: hidden; font-size: 24px; }
       div.row { display: block; height: 1em; overflow: hidden; margin: 4px 0; }
       div.tile { display: inline-block; width: 1em; height: 1em; overflow: hidden; margin: 0; text-align: center; margin: 0 4px; }
+      div.route { display: inline-block; margin: 1em; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -16,6 +17,13 @@
   <body>
     <div id="viewer">
       <h1>Solution Viewer ({{ solutionTitle }})</h1>
+      <div class="routes">
+        <div v-for="route in routes" :style="routeStyle(route)" class="route">
+          <b>DX: {{ route.dx }}</b>, <b>DY: {{ route.dy }}</b>
+          <b>Steps: {{ route.path.length }}</b>
+        </div>
+        <p>Solution 1 Tree Encounters: <b>{{ solutionPart1 }}</b>, Solution 2 Tree Multiplication: <b>{{ solutionPart2 }}</b>.</p>
+      </div>
       <div class="slope" v-if="slopeMap.slice">
         <div class="row" v-for="(row, y) in slopeMap.slice">
           <div class="tile" v-for="(tile, x) in row" :style="cellStyle(tile, x, y)">{{ render(tile, x, y) }}</div>
@@ -27,53 +35,6 @@
       <pre><code>{{ solutionText }}</code></pre>
     </div>
     <script>
-const app = new Vue({
-  el: '#viewer',
-  data: () => {
-    return {
-      solutionText: '[Loading]',
-      inputText: '[Loading]',
-      slopeMap: {},
-      position: { x: 0, y: 0 },
-      points: {}
-    }
-  },
-  methods: {
-    render(tile, x, y) {
-      if (this.position.x === x && this.position.y === y) {
-        return ICONS[TILES.BOAT]
-      }
-      return ICONS[tile]
-    },
-    cellStyle(tile, x, y) {
-      const points = this.points
-      const color = points[`${x},${y}`] || 'white';
-      return `outline: 2px solid ${color}; outline-offset: -2px;`
-    }
-  },
-  computed: {
-    solutionTitle() {
-      const parts = (document.location + '').split('/')
-      return parts.reverse()[1]
-    }
-  },
-  async mounted () {
-    this.solutionText = (await axios.get('./solution.js')).data
-    this.inputText = (await axios.get('./input.txt')).data
-    this.slopeMap = createSlopeMap(this.inputText)
-    
-    const points = {}
-    routes.forEach(route => {
-      const path = traverse(this.slopeMap, route)
-      path.forEach(position => {
-        points[`${position.x % this.slopeMap.width},${position.y}`] = route.color
-      })
-    })
-    console.log('Points', points)
-    this.points = points
-  }
-})
-
 const TILES = {
   TREE: '#',
   SNOW: '.',
@@ -87,12 +48,70 @@ const ICONS = {
 }
 
 const routes = [
-  { dx: 1, dy: 1, color: 'red' },
-  { dx: 3, dy: 1, color: 'blue' },
-  { dx: 5, dy: 1, color: 'green' },
-  { dx: 7, dy: 1, color: 'orange' },
-  { dx: 1, dy: 2, color: 'purple' }
+  { dx: 1, dy: 1, color: 'red', path: [] },
+  { dx: 3, dy: 1, color: 'blue', path: [] },
+  { dx: 5, dy: 1, color: 'green', path: [] },
+  { dx: 7, dy: 1, color: 'orange', path: [] },
+  { dx: 1, dy: 2, color: 'purple', path: [] }
 ]
+
+const app = new Vue({
+  el: '#viewer',
+  data: () => {
+    return {
+      solutionText: '[Loading]',
+      inputText: '[Loading]',
+      slopeMap: {},
+      position: { x: 0, y: 0 },
+      points: {},
+      routes
+    }
+  },
+  methods: {
+    render(tile, x, y) {
+      if (this.position.x === x && this.position.y === y) {
+        return ICONS[TILES.BOAT]
+      }
+      return ICONS[tile]
+    },
+    cellStyle(tile, x, y) {
+      const points = this.points
+      const color = points[`${x},${y}`] || 'white';
+      return `outline: 2px solid ${color}; outline-offset: -2px;`
+    },
+    routeStyle(route) {
+      return `border-bottom: 4px solid ${route.color};`
+    }
+  },
+  computed: {
+    solutionTitle() {
+      const parts = (document.location + '').split('/')
+      return parts.reverse()[1]
+    },
+    solutionPart1() {
+      return this.routes[0].path.length
+    },
+    solutionPart2() {
+      return this.routes.reduce((acc, item) => acc * item.path.length, 1)
+    }
+  },
+  async mounted () {
+    this.solutionText = (await axios.get('./solution.js')).data
+    this.inputText = (await axios.get('./input.txt')).data
+    this.slopeMap = createSlopeMap(this.inputText)
+    
+    const points = {}
+    routes.forEach(route => {
+      const path = traverse(this.slopeMap, route)
+      route.path = path
+      path.forEach(position => {
+        points[`${position.x % this.slopeMap.width},${position.y}`] = route.color
+      })
+    })
+    console.log('Points', points)
+    this.points = points
+  }
+})
 
 function createSlopeMap (input) {
   const slopeMap = {}
