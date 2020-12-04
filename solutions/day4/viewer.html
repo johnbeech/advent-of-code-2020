@@ -6,6 +6,11 @@
       html, body { font-family: sans-serif; }
       pre { border-radius: 0.5em; padding: 0.5em; background: #eee; }
       pre.collapse { height: 100px; overflow-y: scroll; }
+      div.passport { display: inline-block; }
+      div.fields { display: inline-block; border-radius: 0.5em; border-bottom: 2px solid black; border-top: 2px solid #444; margin: 0.7em; }
+      div.fields > p { margin: 0.2em; }
+      div.fields > p > label { width: 150px; display: inline-block; background-color: rgba(255,255,255,0.8); border-radius: 0.3em; padding: 0.2em; }
+      div.fields > p > b { background-color: rgba(255,255,255,0.8); border-radius: 0.3em; padding: 0.2em; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -13,7 +18,18 @@
   <body>
     <div id="viewer">
       <h1>Solution Viewer ({{ solutionTitle }})</h1>
-      <p>For interesting problems; this page can be used as a dynamic viewer.</p>
+      <p>Solution: <b>{{ solution }}</b> valid passwords. Ordered by birth year:</p>
+      <div class="passport" v-for="passport in validPassports">
+        <div class="fields" :style="passportStyle(passport)">
+          <p><label>Birth Year:</label> <b>{{ passport.birthYear }}</b></p>
+          <p><label>Issue Year:</label> <b>{{ passport.issueYear }}</b></p>
+          <p><label>Expiration Year:</label> <b>{{ passport.expirationYear }}</b></p>
+          <p><label>Height:</label> <b>{{ passport.height }}</b></p>
+          <p><label>Hair Color:</label> <b>{{ passport.hairColor }}</b></p>
+          <p><label>Eye Color:</label> <b>{{ passport.eyeColor }}</b></p>
+          <p><label>Passport ID:</label> <b>{{ passport.passportId }}</b></p>
+        </div>
+      </div>
       <h3><a href="./input.txt">input.txt</a></h3>
       <pre class="collapse"><code>{{ inputText }}</code></pre>
       <h3><a href="./solution.js">solution.js</a></h3>
@@ -25,7 +41,9 @@ const app = new Vue({
   data: () => {
     return {
       solutionText: '[Loading]',
-      inputText: '[Loading]'
+      inputText: '[Loading]',
+      validPassports: [],
+      solution: '[Calculating]'
     }
   },
   computed: {
@@ -34,11 +52,114 @@ const app = new Vue({
       return parts.reverse()[1]
     }
   },
+  methods: {
+    passportStyle(passport) {
+      const color = passport.hairColor
+      return `background: ${color};`
+    }
+  },
   async mounted () {
     this.solutionText = (await axios.get('./solution.js')).data
     this.inputText = (await axios.get('./input.txt')).data
+
+    const { solution, validPassports } = solveForSecondStar(this.inputText)
+    this.solution = solution
+    this.validPassports = validPassports.sort((a, b) => {
+      const aDate = Number.parseInt(a.birthYear)
+      const bDate = Number.parseInt(b.birthYear)
+      return aDate - bDate
+    })
   }
 })
+
+
+function solveForSecondStar(input) {
+  const passports = input.split('\n\n').filter(n => n).map(parsePassportRecord)
+
+  console.log(passports)
+  console.log('Found', passports.length, 'records in file')
+
+  const validPassports = passports.filter(p => {
+    const expcetedFields = p.byr && p.iyr && p.eyr && p.hgt && p.hcl && p.ecl && p.pid
+    if (!expcetedFields) {
+      return false
+    }
+
+    const validBirthYear = Number.parseInt(p.byr) >= 1920 && Number.parseInt(p.byr) <= 2002
+    const validIssueYear = Number.parseInt(p.iyr) >= 2010 && Number.parseInt(p.iyr) <= 2020
+    const validExpirationYear = Number.parseInt(p.eyr) >= 2020 && Number.parseInt(p.eyr) <= 2030
+    const validHeight = validateHeight(p.hgt)
+    const validHairColor = validateHairColor(p.hcl)
+    const validEyeColor = validateEyeColor(p.ecl)
+    const validPassportId = validatePassportId(p.pid)
+
+    return validBirthYear && validIssueYear && validExpirationYear && validHeight && validHairColor && validEyeColor && validPassportId
+  }).map(p => {
+    return {
+      birthYear: p.byr,
+      issueYear: p.iyr,
+      expirationYear: p.eyr,
+      height: p.hgt,
+      hairColor: p.hcl,
+      eyeColor: p.ecl,
+      passportId: p.pid
+    }
+  })
+  const solution = validPassports.length
+
+  return {
+    solution,
+    validPassports
+  }
+}
+
+
+
+function parsePassportRecord (record) {
+  const pairs = record.split('\n').join(' ').split(' ')
+  const passport = pairs.reduce((acc, pair) => {
+    const [key, value] = pair.split(':')
+    acc[key] = value
+    return acc
+  }, {})
+  return passport
+}
+
+function validateHeight (height) {
+  const matches = height.match(/(\d+)([A-z]+)/)
+  if (!matches) {
+    return false
+  }
+
+  const [, value, unit] = matches
+  if (unit === 'cm') {
+    return value >= 150 && value <= 193
+  }
+  if (unit === 'in') {
+    return value >= 59 && value <= 76
+  }
+  return false
+}
+
+function validateHairColor (hairColor) {
+  return /#[0-9a-f]{6}/.test(hairColor)
+}
+
+function validateEyeColor (hairColor) {
+  return [
+    'amb',
+    'blu',
+    'brn',
+    'gry',
+    'grn',
+    'hzl',
+    'oth'
+  ].includes(hairColor)
+}
+
+function validatePassportId (id) {
+  return /^[0-9]{9}$/.test(id)
+}
     </script>
   </body>
 </html>
