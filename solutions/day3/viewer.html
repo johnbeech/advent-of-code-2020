@@ -89,10 +89,10 @@ const app = new Vue({
       return parts.reverse()[1]
     },
     solutionPart1() {
-      return this.routes[0].path.length
+      return countEncounters(this.routes[0].path)
     },
     solutionPart2() {
-      return this.routes.reduce((acc, item) => acc * item.path.length, 1)
+      return this.routes.reduce((acc, item) => acc * countEncounters(item.path), 1)
     }
   },
   async mounted () {
