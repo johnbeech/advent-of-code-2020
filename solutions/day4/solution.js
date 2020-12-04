@@ -50,6 +50,7 @@ function validateHeight (height) {
 function validateHairColor (hairColor) {
   return /#[0-9a-f]{6}/.test(hairColor)
 }
+
 function validateEyeColor (hairColor) {
   return [
     'amb',
