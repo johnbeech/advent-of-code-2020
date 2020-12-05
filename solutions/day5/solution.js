@@ -1,5 +1,5 @@
 const path = require('path')
-const { read, position } = require('promise-path')
+const { read, write, position } = require('promise-path')
 const fromHere = position(__dirname)
 const report = (...messages) => console.log(`[${require(fromHere('../../package.json')).logName} / ${__dirname.split(path.sep).pop()}]`, ...messages)
 
@@ -40,12 +40,36 @@ async function solveForFirstStar (input) {
 
   report(sortedPasses)
 
+  await write(fromHere('allocatedSeats.json'), JSON.stringify(sortedPasses, null, 2), 'utf8')
+
   const solution = sortedPasses.reverse()[0]
 
   report('Solution 1:', solution)
 }
 
 async function solveForSecondStar (input) {
+  const passes = input.split('\n').map(parsePass)
+
+  const seatingPlan = {}
+  const maxRow = Math.max(...passes.map(n => n.row))
+  const minRow = Math.min(...passes.map(n => n.row))
+  const maxCol = Math.max(...passes.map(n => n.col))
+  const minCol = Math.min(...passes.map(n => n.col))
+
+  let r = minRow
+  while (r <= maxRow) {
+    let c = minCol
+    while (c <= maxCol) {
+      const seatId = r * 8 + c
+      seatingPlan[seatId] = passes.filter(n => n.id === seatId)[0]
+      if (!seatingPlan[seatId]) {
+        report('No one sitting at:', seatId, 'Row', r, 'Column', c)
+      }
+      c++
+    }
+    r++
+  }
+
   const solution = 'UNSOLVED'
   report('Solution 2:', solution)
 }
