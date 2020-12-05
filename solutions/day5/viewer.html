@@ -6,6 +6,8 @@
       html, body { font-family: sans-serif; }
       pre { border-radius: 0.5em; padding: 0.5em; background: #eee; }
       pre.collapse { height: 100px; overflow-y: scroll; }
+      div.seatingPlan { display: block; position: relative; border: 2px solid black; height: 2750px; width: 284px; }
+      div.seat { display: block; position: absolute; width: 30px; height: 20px; border-radius: 50%; text-align: center; background-color: #999; font-size: 15px; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -13,7 +15,10 @@
   <body>
     <div id="viewer">
       <h1>Solution Viewer ({{ solutionTitle }})</h1>
-      <p>For interesting problems; this page can be used as a dynamic viewer.</p>
+      <p>Solution: <b>{{ solution }}</b>.</p>
+      <div class="seatingPlan">
+        <div class="seat" :style="seatStyle(seat)" v-for="seat in seatingPlan">{{ seat.id }}</div>
+      </div>
       <h3><a href="./input.txt">input.txt</a></h3>
       <pre class="collapse"><code>{{ inputText }}</code></pre>
       <h3><a href="./solution.js">solution.js</a></h3>
@@ -25,7 +30,9 @@ const app = new Vue({
   data: () => {
     return {
       solutionText: '[Loading]',
-      inputText: '[Loading]'
+      inputText: '[Loading]',
+      solution: '[Calculating]',
+      seatingPlan: []
     }
   },
   computed: {
@@ -34,11 +41,82 @@ const app = new Vue({
       return parts.reverse()[1]
     }
   },
+  methods: {
+    seatStyle(seat) {
+      const y = seat.row * 22
+      const x = seat.col * 32 + 10 * Math.floor(seat.col / 2)
+      let color = seat.unoccupied ? 'red' : '#999'
+      color = seat.solution ? 'blue' : color
+      return `top: ${y}px; left: ${x}px; background: ${color};`;
+    }
+  },
   async mounted () {
     this.solutionText = (await axios.get('./solution.js')).data
     this.inputText = (await axios.get('./input.txt')).data
+    const { seatingPlan, solution } = solveForSecondStar(this.inputText)
+    this.seatingPlan = Object.values(seatingPlan)
+    this.solution = solution
   }
 })
+
+
+function parsePass (code) {
+  const row = code.substr(0, 7).split('').reduce((range, instruction) => {
+    const space = range.high - range.low
+    const half = space / 2
+    return (instruction === 'F') ? { low: range.low, high: range.low + half } : { low: range.high - half, high: range.high }
+  }, { low: 0, high: 128 }).low
+  const col = code.substr(7, 3).split('').reduce((range, instruction) => {
+    const space = range.high - range.low
+    const half = space / 2
+    return (instruction === 'L') ? { low: range.low, high: range.low + half } : { low: range.high - half, high: range.high }
+  }, { low: 0, high: 8 }).low
+  return {
+    code,
+    row,
+    col,
+    id: row * 8 + col
+  }
+}
+
+function solveForSecondStar (input) {
+  const passes = input.split('\n').map(parsePass)
+
+  const seatingPlan = {}
+  const maxRow = Math.max(...passes.map(n => n.row))
+  const minRow = Math.min(...passes.map(n => n.row))
+  const maxCol = Math.max(...passes.map(n => n.col))
+  const minCol = Math.min(...passes.map(n => n.col))
+
+  let r = minRow
+  while (r <= maxRow) {
+    let c = minCol
+    while (c <= maxCol) {
+      const seatId = r * 8 + c
+      seatingPlan[seatId] = passes.filter(n => n.id === seatId)[0]
+      if (!seatingPlan[seatId]) {
+        seatingPlan[seatId] = { row: r, col: c, id: seatId, unoccupied: true }
+      }
+      c++
+    }
+    r++
+  }
+
+  const unoccupiedSeats = Object.values(seatingPlan).filter(n => {
+    return n.unoccupied && n.row > minRow && n.row < maxRow
+  })
+
+  console.log(unoccupiedSeats)
+
+  const solution = unoccupiedSeats[0]
+  solution.solution = true
+
+  return {
+    seatingPlan,
+    unoccupiedSeats,
+    solution
+  }
+}
     </script>
   </body>
 </html>
