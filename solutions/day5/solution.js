@@ -30,7 +30,7 @@ function parsePass (code) {
 }
 
 async function solveForFirstStar (input) {
-  const passes = input.split('\n').map(parsePass)
+  const passes = input.split('\n').filter(n => n).map(parsePass)
 
   const sortedPasses = passes.sort((a, b) => {
     const ida = a.id
@@ -48,7 +48,8 @@ async function solveForFirstStar (input) {
 }
 
 async function solveForSecondStar (input) {
-  const passes = input.split('\n').map(parsePass)
+  const passes = input.split('\n').filter(n => n).map(parsePass)
+  console.log('Passes', passes.length)
 
   const seatingPlan = {}
   const maxRow = Math.max(...passes.map(n => n.row))
@@ -74,6 +75,7 @@ async function solveForSecondStar (input) {
     return n.unoccupied && n.row > minRow && n.row < maxRow
   })
 
+  report('Row', minRow, ':', maxRow, 'Col', minCol, ':', maxCol)
   report('Unoccupied seats:', unoccupiedSeats)
 
   const solution = unoccupiedSeats[0]

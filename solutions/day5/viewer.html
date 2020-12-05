@@ -6,8 +6,13 @@
       html, body { font-family: sans-serif; }
       pre { border-radius: 0.5em; padding: 0.5em; background: #eee; }
       pre.collapse { height: 100px; overflow-y: scroll; }
-      div.seatingPlan { display: block; position: relative; border: 2px solid black; height: 2750px; width: 284px; }
+      div.cockpit { display: inline-block; width: 284px; height: 384px; border: 8px solid #555; background: #999; border-radius: 100% 100% 0 0; border-bottom: 0; margin-bottom: -200px; text-align: center }
+      div.cockpit > label { display: inline-block; margin-top: 2em; font-size: 2em; }
+      div.seatingPlan { display: block; position: relative; border: 8px solid #555; height: 2704px; width: 284px; background: #DDD; margin-bottom: -200px; }
       div.seat { display: block; position: absolute; width: 30px; height: 20px; border-radius: 50%; text-align: center; background-color: #999; font-size: 15px; }
+      div.tail { display: inline-block; width: 284px; height: 384px; border: 8px solid #555; background: #999; border-radius: 0 0 40% 40%; border-top: 0; text-align: center }
+      div.tail > label { display: inline-block; font-size: 2em; margin-top: 250px; }
+      p { display: inline-block; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -15,10 +20,15 @@
   <body>
     <div id="viewer">
       <h1>Solution Viewer ({{ solutionTitle }})</h1>
-      <p>Solution: <b>{{ solution }}</b>.</p>
+      <p style="border-bottom: 4px solid royalblue;">Solution 1, Row: <b>{{ solution1.row }}</b>, Column: <b>{{ solution1.col }}</b>, ID: <b>{{ solution1.id }}</b>.</p>
+      <br/>
+      <p style="border-bottom: 4px solid orange;">Solution 2, Row: <b>{{ solution2.row }}</b>, Column: <b>{{ solution2.col }}</b>, ID: <b>{{ solution2.id }}</b>.</p>
+      <br/>
+      <div class="cockpit"><label>plane<br/>(front)</label></div>
       <div class="seatingPlan">
         <div class="seat" :style="seatStyle(seat)" v-for="seat in seatingPlan">{{ seat.id }}</div>
       </div>
+      <div class="tail"><label>(back)</label></div>
       <h3><a href="./input.txt">input.txt</a></h3>
       <pre class="collapse"><code>{{ inputText }}</code></pre>
       <h3><a href="./solution.js">solution.js</a></h3>
@@ -31,7 +41,8 @@ const app = new Vue({
     return {
       solutionText: '[Loading]',
       inputText: '[Loading]',
-      solution: '[Calculating]',
+      solution1: { row: '?', col: '?', id: '[Calculating]'},
+      solution2: { row: '?', col: '?', id: '[Calculating]'},
       seatingPlan: []
     }
   },
@@ -43,19 +54,22 @@ const app = new Vue({
   },
   methods: {
     seatStyle(seat) {
-      const y = seat.row * 22
+      const y = (seat.row - 2) * 22
       const x = seat.col * 32 + 10 * Math.floor(seat.col / 2)
       let color = seat.unoccupied ? 'red' : '#999'
-      color = seat.solution ? 'blue' : color
+      color = seat.solution1 ? 'royalblue' : color
+      color = seat.solution2 ? 'orange' : color
       return `top: ${y}px; left: ${x}px; background: ${color};`;
     }
   },
   async mounted () {
     this.solutionText = (await axios.get('./solution.js')).data
     this.inputText = (await axios.get('./input.txt')).data
+    this.solution1 = solveForFirstStar(this.inputText)
     const { seatingPlan, solution } = solveForSecondStar(this.inputText)
+    seatingPlan[this.solution1.id].solution1 = true
     this.seatingPlan = Object.values(seatingPlan)
-    this.solution = solution
+    this.solution2 = solution
   }
 })
 
@@ -79,8 +93,28 @@ function parsePass (code) {
   }
 }
 
+function solveForFirstStar (input) {
+  const passes = input.split('\n').filter(n => n).map(parsePass)
+
+  const sortedPasses = passes.sort((a, b) => {
+    const ida = a.id
+    const idb = b.id
+    return ida - idb
+  })
+
+  const solution = sortedPasses.reverse()[0]
+
+  console.log('First solution', solution)
+  solution.solution1 = true
+
+  return solution
+}
+
 function solveForSecondStar (input) {
-  const passes = input.split('\n').map(parsePass)
+  const passes = input.split('\n').filter(n => n).map(parsePass)
+
+  console.log('Passes', passes.length)
+  console.log('Rows', passes.map(n => n.row).sort())
 
   const seatingPlan = {}
   const maxRow = Math.max(...passes.map(n => n.row))
@@ -106,10 +140,11 @@ function solveForSecondStar (input) {
     return n.unoccupied && n.row > minRow && n.row < maxRow
   })
 
-  console.log(unoccupiedSeats)
-
   const solution = unoccupiedSeats[0]
-  solution.solution = true
+  solution.solution2 = true
+
+  console.log('Row', minRow, ':', maxRow, 'Col', minCol, ':', maxCol)
+  console.log('Unoccupied Seats', JSON.stringify(unoccupiedSeats, null, 2))
 
   return {
     seatingPlan,
