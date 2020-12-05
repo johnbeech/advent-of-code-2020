@@ -71,7 +71,7 @@ async function solveForSecondStar (input) {
   }
 
   const unoccupiedSeats = Object.values(seatingPlan).filter(n => {
-    return n.unoccupied && n.row !== minRow && n.row !== maxRow
+    return n.unoccupied && n.row > minRow && n.row < maxRow
   })
 
   report('Unoccupied seats:', unoccupiedSeats)
