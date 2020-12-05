@@ -63,14 +63,20 @@ async function solveForSecondStar (input) {
       const seatId = r * 8 + c
       seatingPlan[seatId] = passes.filter(n => n.id === seatId)[0]
       if (!seatingPlan[seatId]) {
-        report('No one sitting at:', seatId, 'Row', r, 'Column', c)
+        seatingPlan[seatId] = { row: r, col: c, id: seatId, unoccupied: true }
       }
       c++
     }
     r++
   }
 
-  const solution = 'UNSOLVED'
+  const unoccupiedSeats = Object.values(seatingPlan).filter(n => {
+    return n.unoccupied && n.row !== minRow && n.row !== maxRow
+  })
+
+  report('Unoccupied seats:', unoccupiedSeats)
+
+  const solution = unoccupiedSeats[0]
   report('Solution 2:', solution)
 }
 
