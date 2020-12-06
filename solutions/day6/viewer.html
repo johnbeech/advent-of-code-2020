@@ -6,6 +6,8 @@
       html, body { font-family: sans-serif; }
       pre { border-radius: 0.5em; padding: 0.5em; background: #eee; }
       pre.collapse { height: 100px; overflow-y: scroll; }
+      div.group { display: inline-block; border-top: 2px solid #aaa; border-bottom: 2px solid #aaa; margin: 1em; padding: 0.4em; border-radius: 5%; }
+      div.answers > span { display: inline-block; margin: 0.2em; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -13,7 +15,30 @@
   <body>
     <div id="viewer">
       <h1>Solution Viewer ({{ solutionTitle }})</h1>
-      <p>For interesting problems; this page can be used as a dynamic viewer.</p>
+      <p>Solution 1: <b>{{ solution1 }}</b> (sum of unique answers), Solution 2: <b>{{ solution2 }}</b> (sum of collective answers)</p>
+      <div class="groups">
+        <div class="group" v-for="group in groups">
+          <span>
+            <label>Group Size:</label>
+            <b>{{ group.size }}</b>
+          </span>
+          <span>
+            <label>Unique Answers:</label>
+            <b>{{ group.count1 }}</b>
+          </span>
+          <span>
+            <label>Collective Answers:</label>
+            <b>{{ group.count2 }}</b>
+          </span>
+          <span>
+            <label>Group think Score:</label>
+            <b>{{ group.groupThinkScore.toFixed(2) }}</b>
+          </span>
+          <div class="answers">
+            <span v-for="(value, key) in group.answers"><label>{{ key }}:</label><b>{{ value }}</b></span>
+          </div>
+        </div>
+      </div>
       <h3><a href="./input.txt">input.txt</a></h3>
       <pre class="collapse"><code>{{ inputText }}</code></pre>
       <h3><a href="./solution.js">solution.js</a></h3>
@@ -25,7 +50,10 @@ const app = new Vue({
   data: () => {
     return {
       solutionText: '[Loading]',
-      inputText: '[Loading]'
+      inputText: '[Loading]',
+      solution1: '[Calculating]',
+      solution2: '[Calculating]',
+      groups: {}
     }
   },
   computed: {
@@ -37,8 +65,51 @@ const app = new Vue({
   async mounted () {
     this.solutionText = (await axios.get('./solution.js')).data
     this.inputText = (await axios.get('./input.txt')).data
+
+    this.solution1 = solveForFirstStar(this.inputText).solution
+    const { groups, solution } = solveForSecondStar(this.inputText)
+    this.solution2 = solution
+    this.groups = groups.sort((a, b) => {
+      return b.groupThinkScore - a.groupThinkScore
+    })
   }
 })
+
+function parseGroup (groupText) {
+  const lines = groupText.split('\n')
+  const answers = lines.join('').split('').reduce((acc, item) => {
+    acc[item] = acc[item] ? acc[item] + 1 : 1
+    return acc
+  }, {})
+
+  const count1 = Object.keys(answers).length
+  const count2 = Object.values(answers).filter(n => n === lines.length).length
+  const size = lines.length
+
+  return {
+    answers,
+    count1,
+    count2,
+    size,
+    groupThinkScore: count2 / size
+  }
+}
+
+function solveForFirstStar (input) {
+  const groups = input.split('\n\n').filter(n => n).map(parseGroup)
+  const solution = groups.reduce((acc, item) => {
+    return acc + item.count1
+  }, 0)
+  return { groups, solution }
+}
+
+function solveForSecondStar (input) {
+  const groups = input.split('\n\n').filter(n => n).map(parseGroup)
+  const solution = groups.reduce((acc, item) => {
+    return acc + item.count2
+  }, 0)
+  return { groups, solution }
+}
     </script>
   </body>
 </html>
