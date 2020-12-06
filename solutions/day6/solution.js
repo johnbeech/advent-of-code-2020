@@ -10,31 +10,37 @@ async function run () {
   await solveForSecondStar(input)
 }
 
-function parseGroups (groupText) {
-  const answers = groupText.split('\n').join('').split('').reduce((acc, item) => {
-    acc[item] = true
+function parseGroup (groupText) {
+  const lines = groupText.split('\n')
+  const answers = lines.join('').split('').reduce((acc, item) => {
+    acc[item] = acc[item] ? acc[item] + 1 : 1
     return acc
   }, {})
 
   return {
     answers,
-    count: Object.keys(answers).length
+    count1: Object.keys(answers).length,
+    count2: Object.values(answers).filter(n => n === lines.length).length
   }
 }
 
 async function solveForFirstStar (input) {
-  const groups = input.split('\n\n').filter(n => n).map(parseGroups)
+  const groups = input.split('\n\n').filter(n => n).map(parseGroup)
 
   report('Groups', groups)
 
   const solution = groups.reduce((acc, item) => {
-    return acc + item.count
+    return acc + item.count1
   }, 0)
   report('Solution 1:', solution)
 }
 
 async function solveForSecondStar (input) {
-  const solution = 'UNSOLVED'
+  const groups = input.split('\n\n').filter(n => n).map(parseGroup)
+
+  const solution = groups.reduce((acc, item) => {
+    return acc + item.count2
+  }, 0)
   report('Solution 2:', solution)
 }
 
