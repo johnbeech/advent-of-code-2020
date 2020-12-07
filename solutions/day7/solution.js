@@ -71,16 +71,19 @@ function mapBagHierarchy (rules) {
   return tree
 }
 
-function findParents (key, hierarchy, result) {
-  const node = hierarchy[key]
-  if (node.parents.length === 0) {
+function findParents (searchKey, hierarchy, result, depth = 0) {
+  const node = hierarchy[searchKey]
+  // store node
+  if (depth > 0) {
     const { key, style, color } = node.rule
     result.push({ key, style, color })
-  } else {
-    node.parents.forEach(parent => {
-      findParents(parent, hierarchy, result)
-    })
   }
+
+  // and parents of parent
+  node.parents.forEach(parent => {
+    findParents(parent, hierarchy, result, depth + 1)
+  })
+
   return result
 }
 
@@ -99,7 +102,7 @@ async function solveForFirstStar (input) {
 
   await write(fromHere('shiny-gold-parents.json'), JSON.stringify(topLevelParents, null, 2), 'utf8')
 
-  const uniqueBagColours = Array.from(new Set(topLevelParents.map(n => n.color)))
+  const uniqueBagColours = Array.from(new Set(topLevelParents.map(n => n.key)))
   report('Unique Bag Colours', uniqueBagColours)
 
   const solution = uniqueBagColours.length
