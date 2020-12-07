@@ -1,8 +1,28 @@
 [
   {
+    "key": "shiny:fuchsia",
+    "style": "shiny",
+    "color": "fuchsia"
+  },
+  {
+    "key": "mirrored:maroon",
+    "style": "mirrored",
+    "color": "maroon"
+  },
+  {
+    "key": "dark:blue",
+    "style": "dark",
+    "color": "blue"
+  },
+  {
     "key": "vibrant:indigo",
     "style": "vibrant",
     "color": "indigo"
+  },
+  {
+    "key": "vibrant:cyan",
+    "style": "vibrant",
+    "color": "cyan"
   },
   {
     "key": "clear:plum",
@@ -15,9 +35,34 @@
     "color": "blue"
   },
   {
+    "key": "plaid:blue",
+    "style": "plaid",
+    "color": "blue"
+  },
+  {
+    "key": "muted:magenta",
+    "style": "muted",
+    "color": "magenta"
+  },
+  {
+    "key": "wavy:coral",
+    "style": "wavy",
+    "color": "coral"
+  },
+  {
+    "key": "pale:yellow",
+    "style": "pale",
+    "color": "yellow"
+  },
+  {
     "key": "dim:salmon",
     "style": "dim",
     "color": "salmon"
+  },
+  {
+    "key": "wavy:red",
+    "style": "wavy",
+    "color": "red"
   },
   {
     "key": "bright:gray",
@@ -25,9 +70,19 @@
     "color": "gray"
   },
   {
+    "key": "pale:magenta",
+    "style": "pale",
+    "color": "magenta"
+  },
+  {
     "key": "striped:violet",
     "style": "striped",
     "color": "violet"
+  },
+  {
+    "key": "muted:beige",
+    "style": "muted",
+    "color": "beige"
   },
   {
     "key": "drab:yellow",
@@ -35,9 +90,24 @@
     "color": "yellow"
   },
   {
+    "key": "bright:lavender",
+    "style": "bright",
+    "color": "lavender"
+  },
+  {
+    "key": "dotted:brown",
+    "style": "dotted",
+    "color": "brown"
+  },
+  {
     "key": "shiny:cyan",
     "style": "shiny",
     "color": "cyan"
+  },
+  {
+    "key": "dark:violet",
+    "style": "dark",
+    "color": "violet"
   },
   {
     "key": "striped:plum",
@@ -45,9 +115,29 @@
     "color": "plum"
   },
   {
+    "key": "mirrored:bronze",
+    "style": "mirrored",
+    "color": "bronze"
+  },
+  {
     "key": "wavy:black",
     "style": "wavy",
     "color": "black"
+  },
+  {
+    "key": "wavy:magenta",
+    "style": "wavy",
+    "color": "magenta"
+  },
+  {
+    "key": "clear:gold",
+    "style": "clear",
+    "color": "gold"
+  },
+  {
+    "key": "bright:turquoise",
+    "style": "bright",
+    "color": "turquoise"
   },
   {
     "key": "posh:tomato",
@@ -55,14 +145,39 @@
     "color": "tomato"
   },
   {
+    "key": "dim:red",
+    "style": "dim",
+    "color": "red"
+  },
+  {
+    "key": "light:orange",
+    "style": "light",
+    "color": "orange"
+  },
+  {
     "key": "dark:gray",
     "style": "dark",
     "color": "gray"
   },
   {
+    "key": "plaid:purple",
+    "style": "plaid",
+    "color": "purple"
+  },
+  {
     "key": "mirrored:turquoise",
     "style": "mirrored",
     "color": "turquoise"
+  },
+  {
+    "key": "dull:green",
+    "style": "dull",
+    "color": "green"
+  },
+  {
+    "key": "shiny:beige",
+    "style": "shiny",
+    "color": "beige"
   },
   {
     "key": "dim:plum",
@@ -75,9 +190,29 @@
     "color": "black"
   },
   {
+    "key": "dark:lime",
+    "style": "dark",
+    "color": "lime"
+  },
+  {
+    "key": "dark:white",
+    "style": "dark",
+    "color": "white"
+  },
+  {
+    "key": "dim:brown",
+    "style": "dim",
+    "color": "brown"
+  },
+  {
     "key": "striped:chartreuse",
     "style": "striped",
     "color": "chartreuse"
+  },
+  {
+    "key": "vibrant:fuchsia",
+    "style": "vibrant",
+    "color": "fuchsia"
   },
   {
     "key": "faded:cyan",
@@ -100,6 +235,16 @@
     "color": "cyan"
   },
   {
+    "key": "posh:maroon",
+    "style": "posh",
+    "color": "maroon"
+  },
+  {
+    "key": "clear:magenta",
+    "style": "clear",
+    "color": "magenta"
+  },
+  {
     "key": "plaid:gold",
     "style": "plaid",
     "color": "gold"
@@ -120,9 +265,19 @@
     "color": "chartreuse"
   },
   {
+    "key": "vibrant:cyan",
+    "style": "vibrant",
+    "color": "cyan"
+  },
+  {
     "key": "clear:plum",
     "style": "clear",
     "color": "plum"
+  },
+  {
+    "key": "vibrant:coral",
+    "style": "vibrant",
+    "color": "coral"
   },
   {
     "key": "posh:bronze",
@@ -135,9 +290,39 @@
     "color": "green"
   },
   {
+    "key": "dim:yellow",
+    "style": "dim",
+    "color": "yellow"
+  },
+  {
     "key": "wavy:gray",
     "style": "wavy",
     "color": "gray"
+  },
+  {
+    "key": "bright:orange",
+    "style": "bright",
+    "color": "orange"
+  },
+  {
+    "key": "muted:green",
+    "style": "muted",
+    "color": "green"
+  },
+  {
+    "key": "dotted:salmon",
+    "style": "dotted",
+    "color": "salmon"
+  },
+  {
+    "key": "dim:maroon",
+    "style": "dim",
+    "color": "maroon"
+  },
+  {
+    "key": "bright:blue",
+    "style": "bright",
+    "color": "blue"
   },
   {
     "key": "bright:aqua",
@@ -150,9 +335,34 @@
     "color": "gold"
   },
   {
+    "key": "muted:silver",
+    "style": "muted",
+    "color": "silver"
+  },
+  {
+    "key": "dull:silver",
+    "style": "dull",
+    "color": "silver"
+  },
+  {
+    "key": "mirrored:silver",
+    "style": "mirrored",
+    "color": "silver"
+  },
+  {
+    "key": "dotted:tan",
+    "style": "dotted",
+    "color": "tan"
+  },
+  {
     "key": "dull:coral",
     "style": "dull",
     "color": "coral"
+  },
+  {
+    "key": "dim:brown",
+    "style": "dim",
+    "color": "brown"
   },
   {
     "key": "striped:chartreuse",
@@ -160,14 +370,34 @@
     "color": "chartreuse"
   },
   {
+    "key": "posh:magenta",
+    "style": "posh",
+    "color": "magenta"
+  },
+  {
     "key": "drab:red",
     "style": "drab",
     "color": "red"
   },
   {
+    "key": "wavy:coral",
+    "style": "wavy",
+    "color": "coral"
+  },
+  {
+    "key": "pale:yellow",
+    "style": "pale",
+    "color": "yellow"
+  },
+  {
     "key": "dim:salmon",
     "style": "dim",
     "color": "salmon"
+  },
+  {
+    "key": "clear:yellow",
+    "style": "clear",
+    "color": "yellow"
   },
   {
     "key": "clear:lavender",
@@ -183,6 +413,11 @@
     "key": "faded:plum",
     "style": "faded",
     "color": "plum"
+  },
+  {
+    "key": "plaid:tan",
+    "style": "plaid",
+    "color": "tan"
   },
   {
     "key": "muted:black",
@@ -205,9 +440,24 @@
     "color": "tomato"
   },
   {
+    "key": "dull:maroon",
+    "style": "dull",
+    "color": "maroon"
+  },
+  {
+    "key": "striped:white",
+    "style": "striped",
+    "color": "white"
+  },
+  {
     "key": "pale:red",
     "style": "pale",
     "color": "red"
+  },
+  {
+    "key": "plaid:beige",
+    "style": "plaid",
+    "color": "beige"
   },
   {
     "key": "dotted:red",
@@ -220,6 +470,11 @@
     "color": "chartreuse"
   },
   {
+    "key": "dark:brown",
+    "style": "dark",
+    "color": "brown"
+  },
+  {
     "key": "drab:indigo",
     "style": "drab",
     "color": "indigo"
@@ -228,6 +483,16 @@
     "key": "pale:black",
     "style": "pale",
     "color": "black"
+  },
+  {
+    "key": "dark:silver",
+    "style": "dark",
+    "color": "silver"
+  },
+  {
+    "key": "vibrant:olive",
+    "style": "vibrant",
+    "color": "olive"
   },
   {
     "key": "striped:gray",
@@ -240,6 +505,21 @@
     "color": "red"
   },
   {
+    "key": "drab:silver",
+    "style": "drab",
+    "color": "silver"
+  },
+  {
+    "key": "clear:gray",
+    "style": "clear",
+    "color": "gray"
+  },
+  {
+    "key": "dotted:silver",
+    "style": "dotted",
+    "color": "silver"
+  },
+  {
     "key": "dull:yellow",
     "style": "dull",
     "color": "yellow"
@@ -250,9 +530,39 @@
     "color": "tan"
   },
   {
+    "key": "plaid:maroon",
+    "style": "plaid",
+    "color": "maroon"
+  },
+  {
+    "key": "light:silver",
+    "style": "light",
+    "color": "silver"
+  },
+  {
     "key": "dark:lavender",
     "style": "dark",
     "color": "lavender"
+  },
+  {
+    "key": "mirrored:green",
+    "style": "mirrored",
+    "color": "green"
+  },
+  {
+    "key": "posh:crimson",
+    "style": "posh",
+    "color": "crimson"
+  },
+  {
+    "key": "striped:bronze",
+    "style": "striped",
+    "color": "bronze"
+  },
+  {
+    "key": "faded:bronze",
+    "style": "faded",
+    "color": "bronze"
   },
   {
     "key": "dark:indigo",
@@ -262,6 +572,21 @@
   {
     "key": "clear:blue",
     "style": "clear",
+    "color": "blue"
+  },
+  {
+    "key": "dotted:salmon",
+    "style": "dotted",
+    "color": "salmon"
+  },
+  {
+    "key": "dim:maroon",
+    "style": "dim",
+    "color": "maroon"
+  },
+  {
+    "key": "bright:blue",
+    "style": "bright",
     "color": "blue"
   },
   {
@@ -275,9 +600,34 @@
     "color": "gold"
   },
   {
+    "key": "muted:silver",
+    "style": "muted",
+    "color": "silver"
+  },
+  {
+    "key": "dull:silver",
+    "style": "dull",
+    "color": "silver"
+  },
+  {
+    "key": "mirrored:silver",
+    "style": "mirrored",
+    "color": "silver"
+  },
+  {
+    "key": "dotted:tan",
+    "style": "dotted",
+    "color": "tan"
+  },
+  {
     "key": "dull:coral",
     "style": "dull",
     "color": "coral"
+  },
+  {
+    "key": "dim:brown",
+    "style": "dim",
+    "color": "brown"
   },
   {
     "key": "striped:chartreuse",
@@ -285,14 +635,34 @@
     "color": "chartreuse"
   },
   {
+    "key": "posh:magenta",
+    "style": "posh",
+    "color": "magenta"
+  },
+  {
     "key": "drab:red",
     "style": "drab",
     "color": "red"
   },
   {
+    "key": "wavy:coral",
+    "style": "wavy",
+    "color": "coral"
+  },
+  {
+    "key": "pale:yellow",
+    "style": "pale",
+    "color": "yellow"
+  },
+  {
     "key": "dim:salmon",
     "style": "dim",
     "color": "salmon"
+  },
+  {
+    "key": "clear:yellow",
+    "style": "clear",
+    "color": "yellow"
   },
   {
     "key": "clear:lavender",
@@ -310,6 +680,11 @@
     "color": "plum"
   },
   {
+    "key": "plaid:tan",
+    "style": "plaid",
+    "color": "tan"
+  },
+  {
     "key": "muted:black",
     "style": "muted",
     "color": "black"
@@ -325,9 +700,24 @@
     "color": "tomato"
   },
   {
+    "key": "clear:violet",
+    "style": "clear",
+    "color": "violet"
+  },
+  {
+    "key": "striped:blue",
+    "style": "striped",
+    "color": "blue"
+  },
+  {
     "key": "vibrant:salmon",
     "style": "vibrant",
     "color": "salmon"
+  },
+  {
+    "key": "clear:yellow",
+    "style": "clear",
+    "color": "yellow"
   },
   {
     "key": "clear:lavender",
@@ -350,14 +740,44 @@
     "color": "cyan"
   },
   {
+    "key": "bright:plum",
+    "style": "bright",
+    "color": "plum"
+  },
+  {
     "key": "striped:turquoise",
     "style": "striped",
     "color": "turquoise"
   },
   {
+    "key": "light:lavender",
+    "style": "light",
+    "color": "lavender"
+  },
+  {
+    "key": "wavy:tomato",
+    "style": "wavy",
+    "color": "tomato"
+  },
+  {
+    "key": "shiny:green",
+    "style": "shiny",
+    "color": "green"
+  },
+  {
     "key": "posh:orange",
     "style": "posh",
     "color": "orange"
+  },
+  {
+    "key": "shiny:aqua",
+    "style": "shiny",
+    "color": "aqua"
+  },
+  {
+    "key": "drab:lime",
+    "style": "drab",
+    "color": "lime"
   },
   {
     "key": "wavy:silver",
@@ -380,14 +800,34 @@
     "color": "green"
   },
   {
+    "key": "faded:gray",
+    "style": "faded",
+    "color": "gray"
+  },
+  {
     "key": "faded:silver",
     "style": "faded",
     "color": "silver"
   },
   {
+    "key": "shiny:blue",
+    "style": "shiny",
+    "color": "blue"
+  },
+  {
+    "key": "pale:plum",
+    "style": "pale",
+    "color": "plum"
+  },
+  {
     "key": "clear:fuchsia",
     "style": "clear",
     "color": "fuchsia"
+  },
+  {
+    "key": "pale:plum",
+    "style": "pale",
+    "color": "plum"
   },
   {
     "key": "clear:fuchsia",
@@ -398,6 +838,16 @@
     "key": "muted:black",
     "style": "muted",
     "color": "black"
+  },
+  {
+    "key": "shiny:aqua",
+    "style": "shiny",
+    "color": "aqua"
+  },
+  {
+    "key": "drab:lime",
+    "style": "drab",
+    "color": "lime"
   },
   {
     "key": "wavy:silver",
