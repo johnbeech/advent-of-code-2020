@@ -5,9 +5,16 @@ const report = (...messages) => console.log(`[${require(fromHere('../../package.
 
 async function run () {
   const input = (await read(fromHere('input.txt'), 'utf8')).trim()
+  const rules = input.split('\n').filter(n => n).map(parseRule)
 
-  await solveForFirstStar(input)
-  await solveForSecondStar(input)
+  await write(fromHere('rules.json'), JSON.stringify(rules, null, 2), 'utf8')
+  const hierarchy = mapBagHierarchy(rules)
+
+  await write(fromHere('hierarchy.json'), JSON.stringify(hierarchy, null, 2), 'utf8')
+  console.log(hierarchy['shiny:gold'])
+
+  await solveForFirstStar(hierarchy)
+  await solveForSecondStar(hierarchy)
 }
 
 function parseBag (line) {
@@ -87,19 +94,22 @@ function findParents (searchKey, hierarchy, result, depth = 0) {
   return result
 }
 
-async function solveForFirstStar (input) {
-  const rules = input.split('\n').filter(n => n).map(parseRule)
+function findChildren (searchKey, hierarchy, result) {
+  const node = hierarchy[searchKey]
 
-  await write(fromHere('rules.json'), JSON.stringify(rules, null, 2), 'utf8')
+  node.rule.contains.forEach(child => {
+    const { key, style, color, quantity } = child
+    for (let i = 0; i < quantity; i++) {
+      result.push({ key, style, color })
+      findChildren(child.key, hierarchy, result)
+    }
+  })
 
-  const hierarchy = mapBagHierarchy(rules)
+  return result
+}
 
-  await write(fromHere('hierarchy.json'), JSON.stringify(hierarchy, null, 2), 'utf8')
-
-  console.log(hierarchy['shiny:gold'])
-
+async function solveForFirstStar (hierarchy) {
   const topLevelParents = findParents('shiny:gold', hierarchy, [])
-
   await write(fromHere('shiny-gold-parents.json'), JSON.stringify(topLevelParents, null, 2), 'utf8')
 
   const uniqueBagColours = Array.from(new Set(topLevelParents.map(n => n.key)))
@@ -109,8 +119,11 @@ async function solveForFirstStar (input) {
   report('Solution 1:', solution)
 }
 
-async function solveForSecondStar (input) {
-  const solution = 'UNSOLVED'
+async function solveForSecondStar (hierarchy) {
+  const bagRules = findChildren('shiny:gold', hierarchy, [])
+  await write(fromHere('shiny-gold-bag-rules.json'), JSON.stringify(bagRules, null, 2), 'utf8')
+
+  const solution = bagRules.length
   report('Solution 2:', solution)
 }
 
