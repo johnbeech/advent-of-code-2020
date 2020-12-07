@@ -1,0 +1,412 @@
+[
+  {
+    "key": "vibrant:indigo",
+    "style": "vibrant",
+    "color": "indigo"
+  },
+  {
+    "key": "clear:plum",
+    "style": "clear",
+    "color": "plum"
+  },
+  {
+    "key": "muted:blue",
+    "style": "muted",
+    "color": "blue"
+  },
+  {
+    "key": "dim:salmon",
+    "style": "dim",
+    "color": "salmon"
+  },
+  {
+    "key": "bright:gray",
+    "style": "bright",
+    "color": "gray"
+  },
+  {
+    "key": "striped:violet",
+    "style": "striped",
+    "color": "violet"
+  },
+  {
+    "key": "drab:yellow",
+    "style": "drab",
+    "color": "yellow"
+  },
+  {
+    "key": "shiny:cyan",
+    "style": "shiny",
+    "color": "cyan"
+  },
+  {
+    "key": "striped:plum",
+    "style": "striped",
+    "color": "plum"
+  },
+  {
+    "key": "wavy:black",
+    "style": "wavy",
+    "color": "black"
+  },
+  {
+    "key": "posh:tomato",
+    "style": "posh",
+    "color": "tomato"
+  },
+  {
+    "key": "dark:gray",
+    "style": "dark",
+    "color": "gray"
+  },
+  {
+    "key": "mirrored:turquoise",
+    "style": "mirrored",
+    "color": "turquoise"
+  },
+  {
+    "key": "dim:plum",
+    "style": "dim",
+    "color": "plum"
+  },
+  {
+    "key": "vibrant:black",
+    "style": "vibrant",
+    "color": "black"
+  },
+  {
+    "key": "striped:chartreuse",
+    "style": "striped",
+    "color": "chartreuse"
+  },
+  {
+    "key": "faded:cyan",
+    "style": "faded",
+    "color": "cyan"
+  },
+  {
+    "key": "mirrored:salmon",
+    "style": "mirrored",
+    "color": "salmon"
+  },
+  {
+    "key": "pale:lime",
+    "style": "pale",
+    "color": "lime"
+  },
+  {
+    "key": "light:cyan",
+    "style": "light",
+    "color": "cyan"
+  },
+  {
+    "key": "plaid:gold",
+    "style": "plaid",
+    "color": "gold"
+  },
+  {
+    "key": "drab:indigo",
+    "style": "drab",
+    "color": "indigo"
+  },
+  {
+    "key": "pale:lime",
+    "style": "pale",
+    "color": "lime"
+  },
+  {
+    "key": "mirrored:chartreuse",
+    "style": "mirrored",
+    "color": "chartreuse"
+  },
+  {
+    "key": "clear:plum",
+    "style": "clear",
+    "color": "plum"
+  },
+  {
+    "key": "posh:bronze",
+    "style": "posh",
+    "color": "bronze"
+  },
+  {
+    "key": "drab:green",
+    "style": "drab",
+    "color": "green"
+  },
+  {
+    "key": "wavy:gray",
+    "style": "wavy",
+    "color": "gray"
+  },
+  {
+    "key": "bright:aqua",
+    "style": "bright",
+    "color": "aqua"
+  },
+  {
+    "key": "dim:gold",
+    "style": "dim",
+    "color": "gold"
+  },
+  {
+    "key": "dull:coral",
+    "style": "dull",
+    "color": "coral"
+  },
+  {
+    "key": "striped:chartreuse",
+    "style": "striped",
+    "color": "chartreuse"
+  },
+  {
+    "key": "drab:red",
+    "style": "drab",
+    "color": "red"
+  },
+  {
+    "key": "dim:salmon",
+    "style": "dim",
+    "color": "salmon"
+  },
+  {
+    "key": "clear:lavender",
+    "style": "clear",
+    "color": "lavender"
+  },
+  {
+    "key": "vibrant:turquoise",
+    "style": "vibrant",
+    "color": "turquoise"
+  },
+  {
+    "key": "faded:plum",
+    "style": "faded",
+    "color": "plum"
+  },
+  {
+    "key": "muted:black",
+    "style": "muted",
+    "color": "black"
+  },
+  {
+    "key": "faded:lime",
+    "style": "faded",
+    "color": "lime"
+  },
+  {
+    "key": "dark:tomato",
+    "style": "dark",
+    "color": "tomato"
+  },
+  {
+    "key": "pale:tomato",
+    "style": "pale",
+    "color": "tomato"
+  },
+  {
+    "key": "pale:red",
+    "style": "pale",
+    "color": "red"
+  },
+  {
+    "key": "dotted:red",
+    "style": "dotted",
+    "color": "red"
+  },
+  {
+    "key": "faded:chartreuse",
+    "style": "faded",
+    "color": "chartreuse"
+  },
+  {
+    "key": "drab:indigo",
+    "style": "drab",
+    "color": "indigo"
+  },
+  {
+    "key": "pale:black",
+    "style": "pale",
+    "color": "black"
+  },
+  {
+    "key": "striped:gray",
+    "style": "striped",
+    "color": "gray"
+  },
+  {
+    "key": "drab:red",
+    "style": "drab",
+    "color": "red"
+  },
+  {
+    "key": "dull:yellow",
+    "style": "dull",
+    "color": "yellow"
+  },
+  {
+    "key": "light:tan",
+    "style": "light",
+    "color": "tan"
+  },
+  {
+    "key": "dark:lavender",
+    "style": "dark",
+    "color": "lavender"
+  },
+  {
+    "key": "dark:indigo",
+    "style": "dark",
+    "color": "indigo"
+  },
+  {
+    "key": "clear:blue",
+    "style": "clear",
+    "color": "blue"
+  },
+  {
+    "key": "bright:aqua",
+    "style": "bright",
+    "color": "aqua"
+  },
+  {
+    "key": "dim:gold",
+    "style": "dim",
+    "color": "gold"
+  },
+  {
+    "key": "dull:coral",
+    "style": "dull",
+    "color": "coral"
+  },
+  {
+    "key": "striped:chartreuse",
+    "style": "striped",
+    "color": "chartreuse"
+  },
+  {
+    "key": "drab:red",
+    "style": "drab",
+    "color": "red"
+  },
+  {
+    "key": "dim:salmon",
+    "style": "dim",
+    "color": "salmon"
+  },
+  {
+    "key": "clear:lavender",
+    "style": "clear",
+    "color": "lavender"
+  },
+  {
+    "key": "vibrant:turquoise",
+    "style": "vibrant",
+    "color": "turquoise"
+  },
+  {
+    "key": "faded:plum",
+    "style": "faded",
+    "color": "plum"
+  },
+  {
+    "key": "muted:black",
+    "style": "muted",
+    "color": "black"
+  },
+  {
+    "key": "faded:lime",
+    "style": "faded",
+    "color": "lime"
+  },
+  {
+    "key": "dark:tomato",
+    "style": "dark",
+    "color": "tomato"
+  },
+  {
+    "key": "vibrant:salmon",
+    "style": "vibrant",
+    "color": "salmon"
+  },
+  {
+    "key": "clear:lavender",
+    "style": "clear",
+    "color": "lavender"
+  },
+  {
+    "key": "vibrant:turquoise",
+    "style": "vibrant",
+    "color": "turquoise"
+  },
+  {
+    "key": "dotted:magenta",
+    "style": "dotted",
+    "color": "magenta"
+  },
+  {
+    "key": "shiny:cyan",
+    "style": "shiny",
+    "color": "cyan"
+  },
+  {
+    "key": "striped:turquoise",
+    "style": "striped",
+    "color": "turquoise"
+  },
+  {
+    "key": "posh:orange",
+    "style": "posh",
+    "color": "orange"
+  },
+  {
+    "key": "wavy:silver",
+    "style": "wavy",
+    "color": "silver"
+  },
+  {
+    "key": "vibrant:silver",
+    "style": "vibrant",
+    "color": "silver"
+  },
+  {
+    "key": "mirrored:lavender",
+    "style": "mirrored",
+    "color": "lavender"
+  },
+  {
+    "key": "wavy:green",
+    "style": "wavy",
+    "color": "green"
+  },
+  {
+    "key": "faded:silver",
+    "style": "faded",
+    "color": "silver"
+  },
+  {
+    "key": "clear:fuchsia",
+    "style": "clear",
+    "color": "fuchsia"
+  },
+  {
+    "key": "clear:fuchsia",
+    "style": "clear",
+    "color": "fuchsia"
+  },
+  {
+    "key": "muted:black",
+    "style": "muted",
+    "color": "black"
+  },
+  {
+    "key": "wavy:silver",
+    "style": "wavy",
+    "color": "silver"
+  },
+  {
+    "key": "vibrant:silver",
+    "style": "vibrant",
+    "color": "silver"
+  }
+]
