@@ -6,8 +6,8 @@ const report = (...messages) => console.log(`[${require(fromHere('../../package.
 async function run () {
   const input = (await read(fromHere('input.txt'), 'utf8')).trim()
 
-  await solveForFirstStar(input)
-  await solveForSecondStar(input)
+  const { solution, xmas } = await solveForFirstStar(input)
+  await solveForSecondStar(solution, xmas)
 }
 
 async function solveForFirstStar (input) {
@@ -38,12 +38,50 @@ async function solveForFirstStar (input) {
     }
   })
 
-  const solution = xmas.filter(x => x.sums.length === 0 && x.index >= preambleSize)
+  const solution = xmas.filter(x => x.sums.length === 0 && x.index >= preambleSize)[0].number
   report('Solution 1:', solution)
+  return {
+    solution,
+    xmas
+  }
 }
 
-async function solveForSecondStar (input) {
-  const solution = 'UNSOLVED'
+async function solveForSecondStar (seed, xmas) {
+  let encryptionWeakness = '?'
+  const weaknesses = xmas.map((x, index, xmas) => {
+    const checkedValues = [x.number]
+    let lowerBound = x.number
+    let upperBound = lowerBound
+    let runningTotal = lowerBound
+    let next
+    do {
+      next = xmas[index + checkedValues.length]
+      if (next) {
+        lowerBound = Math.min(lowerBound, next.number)
+        upperBound = Math.max(upperBound, next.number)
+        runningTotal = runningTotal + next.number
+        checkedValues.push(next.number)
+      }
+    } while (runningTotal < seed && next)
+    encryptionWeakness = lowerBound + upperBound
+    if (runningTotal === seed) {
+      console.log(checkedValues)
+      report('Lower bound:', lowerBound, 'Upper bound:', upperBound, 'Total:', runningTotal, 'Seed:', seed, 'Checked values:', checkedValues.length, 'Encryption weakness:', encryptionWeakness)
+    }
+    return {
+      lowerBound,
+      upperBound,
+      runningTotal,
+      seed,
+      checkedValues,
+      encryptionWeakness
+    }
+  })
+
+  const validWeaknesses = weaknesses.filter(n => n.runningTotal === seed && n.checkedValues.length > 1)
+  report('Found', validWeaknesses.length, 'valid weaknesses.')
+
+  const solution = validWeaknesses[0].encryptionWeakness
   report('Solution 2:', solution)
 }
 
