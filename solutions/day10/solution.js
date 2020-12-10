@@ -18,11 +18,6 @@ function createAdapter (rating) {
       rating + 1,
       rating + 2,
       rating + 3
-    ],
-    reverseCompatability: [
-      rating - 1,
-      rating - 2,
-      rating - 3
     ]
   }
 }
@@ -65,10 +60,15 @@ async function solveForSecondStar (input) {
   const adapters = input.split('\n').filter(n => n).map(createAdapter).sort(sortByAdapterRating)
   const connectedAdapters = adapters.map(connectAdapter)
 
-  const solution = connectedAdapters.reduce((acc, adapter) => {
-    return acc * Math.pow(2, adapter.connections.length - 1)
-  }, 1)
-  report('Solution 2:', solution, 'combinations from', connectedAdapters.length, 'connected adapters', solution / 19208)
+  const branch2Connections = connectedAdapters.filter(n => n.connections.length === 2)
+  const branch3Connections = connectedAdapters.filter(n => n.connections.length === 3)
+
+  const solution = Math.pow(2, branch3Connections.length + branch2Connections.length)
+  const b2 = branch2Connections.length
+  const b3 = branch3Connections.length
+  const solutionDiff = 19208 - solution
+  console.log(solution, b2, b3, b2 * b3, solutionDiff, solutionDiff / b2, solutionDiff / b3, Math.sqrt(solutionDiff))
+  report('Solution 2:', solution, 'combinations from', connectedAdapters.length, 'connected adapters.')
 }
 
 run()
