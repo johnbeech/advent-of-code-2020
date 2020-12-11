@@ -12,6 +12,11 @@ async function generateIndexHTML () {
   const solutions = await find(fromHere('/*'))
   const links = solutions
     .filter(n => n.indexOf('.js') === -1 && n.indexOf('.html') === -1)
+    .sort((a, b) => {
+      const af = Number.parseInt(a.substr(fromHere('./').length).replace('day', ''))
+      const bf = Number.parseInt(b.substr(fromHere('./').length).replace('day', ''))
+      return af - bf
+    })
     .map(solution => {
       const folder = solution.substr(fromHere('./').length)
       return `      <li><a href="./${folder}/viewer.html">${folder}</a></li>`
@@ -63,3 +68,5 @@ app.get('/', async (req, res) => {
 
 const port = 8080
 app.listen(port, () => report(`Listening on http://localhost:${port}/`))
+
+generateIndexHTML()
