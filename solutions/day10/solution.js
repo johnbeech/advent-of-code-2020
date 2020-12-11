@@ -4,7 +4,7 @@ const fromHere = position(__dirname)
 const report = (...messages) => console.log(`[${require(fromHere('../../package.json')).logName} / ${__dirname.split(path.sep).pop()}]`, ...messages)
 
 async function run () {
-  const input = (await read(fromHere('test.txt'), 'utf8')).trim()
+  const input = (await read(fromHere('input.txt'), 'utf8')).trim()
 
   await solveForFirstStar(input)
   await solveForSecondStar(input)
@@ -58,17 +58,35 @@ async function solveForFirstStar (input) {
 
 async function solveForSecondStar (input) {
   const adapters = input.split('\n').filter(n => n).map(createAdapter).sort(sortByAdapterRating)
-  const connectedAdapters = adapters.map(connectAdapter)
+  adapters.unshift({ rating: 0 })
 
-  const branch2Connections = connectedAdapters.filter(n => n.connections.length === 2)
-  const branch3Connections = connectedAdapters.filter(n => n.connections.length === 3)
+  const permutations = [1, 1, 1, 2, 4, 7, 13]
+  let sequenceLength = 0
+  let combinationCount = 1
+  let maxLength = 0
+  const jolts = {
+    1: 0,
+    3: 0
+  }
+  adapters.forEach((adapter, index, list) => {
+    sequenceLength++
+    const next = list[index + 1] || { rating: adapter.rating + 3 }
+    if (next) {
+      const jolt = next.rating - adapter.rating
+      jolts[jolt]++
+      if (jolt === 3) {
+        combinationCount = combinationCount * permutations[sequenceLength]
+        maxLength = Math.max(maxLength, sequenceLength)
+        sequenceLength = 0
+      }
+    }
+  })
 
-  const solution = Math.pow(2, branch3Connections.length + branch2Connections.length)
-  const b2 = branch2Connections.length
-  const b3 = branch3Connections.length
-  const solutionDiff = 19208 - solution
-  console.log(solution, b2, b3, b2 * b3, solutionDiff, solutionDiff / b2, solutionDiff / b3, Math.sqrt(solutionDiff))
-  report('Solution 2:', solution, 'combinations from', connectedAdapters.length, 'connected adapters.')
+  report('Max sequence length:', maxLength, 'Jolts:', jolts)
+
+  const solution = combinationCount
+
+  report('Solution 2:', solution, 'combinations from', adapters.length, 'connected adapters.')
 }
 
 run()
