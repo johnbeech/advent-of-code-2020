@@ -4,7 +4,7 @@ const fromHere = position(__dirname)
 const report = (...messages) => console.log(`[${require(fromHere('../../package.json')).logName} / ${__dirname.split(path.sep).pop()}]`, ...messages)
 
 async function run () {
-  const input = (await read(fromHere('test.txt'), 'utf8')).trim()
+  const input = (await read(fromHere('input.txt'), 'utf8')).trim()
 
   await solveForFirstStar(input)
   await solveForSecondStar(input)
@@ -118,8 +118,8 @@ function turnWaypoint (ship, instruction) {
     turnSteps--
     const owx = -wy
     const owy = wx
-    wy = owx
-    wx = owy
+    wx = owx
+    wy = owy
   }
   return {
     x: ship.x,
