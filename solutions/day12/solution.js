@@ -4,7 +4,7 @@ const fromHere = position(__dirname)
 const report = (...messages) => console.log(`[${require(fromHere('../../package.json')).logName} / ${__dirname.split(path.sep).pop()}]`, ...messages)
 
 async function run () {
-  const input = (await read(fromHere('input.txt'), 'utf8')).trim()
+  const input = (await read(fromHere('test.txt'), 'utf8')).trim()
 
   await solveForFirstStar(input)
   await solveForSecondStar(input)
@@ -145,6 +145,9 @@ async function solveForSecondStar (input) {
 
   const startPosition = { x: 0, y: 0, wx: 10, wy: -1 }
   const finalPosition = instructions.reduce(drive(waypointActions), startPosition)
+
+  const ship = finalPosition
+  console.log('Ship:', ship.x, ',', ship.y, 'Waypoint:', ship.wx, ',', ship.wy)
 
   const solution = Math.abs(finalPosition.x + finalPosition.y)
   report('Solution 2:', solution)
