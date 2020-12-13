@@ -12,7 +12,7 @@ async function run () {
 
 function parseTimetable (input) {
   const [timestamp, serviceLine] = input.split('\n').filter(n => n)
-  const serviceIds = serviceLine.split(',').filter(n => n !== 'x').map(n => Number.parseInt(n))
+  const serviceIds = serviceLine.split(',')
   return {
     timestamp: Number.parseInt(timestamp),
     serviceIds
@@ -22,11 +22,13 @@ function parseTimetable (input) {
 async function solveForFirstStar (input) {
   const timetable = parseTimetable(input)
 
-  const arrivals = timetable.serviceIds.map(serviceId => {
+  const arrivals = timetable.serviceIds.filter(n => n !== 'x').map(serviceId => {
+    const cadence = Number.parseInt(serviceId)
     return {
       serviceId,
-      arrival: Math.floor(timetable.timestamp / serviceId) * serviceId,
-      waitTime: serviceId - (timetable.timestamp % serviceId)
+      cadence,
+      arrival: Math.floor(timetable.timestamp / cadence) * cadence,
+      waitTime: cadence - (timetable.timestamp % cadence)
     }
   }).sort((a, b) => a.waitTime - b.waitTime)
 
@@ -39,7 +41,34 @@ async function solveForFirstStar (input) {
 }
 
 async function solveForSecondStar (input) {
-  const solution = 'UNSOLVED'
+  const timetable = parseTimetable(input)
+  const searchSpace = timetable.serviceIds.map((serviceId, offset) => {
+    return {
+      serviceId,
+      cadence: Number.parseInt(serviceId),
+      offset
+    }
+  }).filter(n => n.serviceId !== 'x')
+
+  console.log('Search space', searchSpace)
+
+  let time = 0
+  let count = 0
+  const firstBus = searchSpace.shift()
+  let increment = firstBus.cadence
+  searchSpace.forEach(bus => {
+    console.log('Lining up bus:', bus.cadence, 'at increment:', increment, 'time:', time, 'count:', count)
+    let remainder
+    do {
+      time = time + increment
+      remainder = (time + bus.offset) % bus.cadence
+      count++
+    } while (remainder !== 0)
+    increment *= bus.cadence
+  })
+  console.log('Used', count, 'loops to find answer')
+
+  const solution = time
   report('Solution 2:', solution)
 }
 
