@@ -48,7 +48,7 @@ async function solveForSecondStar (input) {
       cadence: Number.parseInt(serviceId),
       offset
     }
-  }).filter(n => n.serviceId !== 'x')
+  }).filter(n => n.serviceId !== 'x').sort((a, b) => a.offset - b.offset)
 
   console.log('Search space', searchSpace)
 
