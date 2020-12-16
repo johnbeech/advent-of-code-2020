@@ -40,6 +40,10 @@ ${links.join('\n')}
   report('Updated hard coded index:', fromHere('index.html'))
   await write(fromHere('index.html'), html, 'utf8')
 
+  if (process.argv[2] === 'then-stop') {
+    process.exit(0)
+  }
+
   return html
 }
 
