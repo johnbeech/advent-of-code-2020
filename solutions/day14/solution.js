@@ -4,7 +4,7 @@ const fromHere = position(__dirname)
 const report = (...messages) => console.log(`[${require(fromHere('../../package.json')).logName} / ${__dirname.split(path.sep).pop()}]`, ...messages)
 
 async function run () {
-  const input = (await read(fromHere('test.txt'), 'utf8')).trim()
+  const input = (await read(fromHere('input.txt'), 'utf8')).trim()
 
   await solveForFirstStar(input)
   await solveForSecondStar(input)
@@ -25,22 +25,26 @@ function parseBootLine (line) {
   }
 }
 
-function maskValue (value, mask) {
-  const binaryValue = value.toString(2).split('')
-  const binaryString = mask.map((maskBit, index) => {
-    const valueBit = binaryValue[index] || 0
+function maskValue (value, mask, address) {
+  const binaryValues = value.toString(2).split('')
+  while (binaryValues.length < mask.length) {
+    binaryValues.unshift(0)
+  }
+  const binaryResults = mask.map((maskBit, index) => {
+    const valueBit = binaryValues[index] || 0
     return maskBit === 'X' ? valueBit : maskBit
-  }).join('')
+  })
+  const binaryResult = binaryResults.join('')
   console.log('Mapped', value)
-  console.log('BV', binaryString)
+  console.log('BV', binaryValues.join(''))
   console.log('MS', mask.join(''))
-  console.log('BS', binaryString)
-  console.log('to:', Number.parseInt(binaryString, 2))
-  return Number.parseInt(binaryString, 2)
+  console.log('BR', binaryResult)
+  console.log('to:', Number.parseInt(binaryResult, 2), 'at address:', address)
+  return Number.parseInt(binaryResult, 2)
 }
 
 function setComputerMemory (item, computer) {
-  computer.memory[item.address] = maskValue(item.value, computer.mask)
+  computer.memory[item.address] = maskValue(item.value, computer.mask, item.address)
   return computer
 }
 
