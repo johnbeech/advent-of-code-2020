@@ -27,4 +27,4 @@ A local webserver has been provided to browse the solutions, and optionally crea
 
 To start the server run: `npm run webserver` - a new hardcoded index.html will be generated each time you browse the index.
 
-Solutions with visualisations be browsed online at: [https://johnbeech.github.io/advent-of-code-2020/solutions/](https://johnbeech.github.io/advent-of-code-2020/solutions/)
+Solutions with visualisations can be browsed online at: [https://johnbeech.github.io/advent-of-code-2020/solutions/](https://johnbeech.github.io/advent-of-code-2020/solutions/)
